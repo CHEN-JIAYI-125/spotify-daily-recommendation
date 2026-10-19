@@ -1,9 +1,17 @@
 # Daily Playlist Curation Dashboard — BANA409 Assignment 4, Part 1
 
-**Owner:** [YOUR NAME]  
-**Team:** [YOUR TEAM NAME]  
+**Owner:** Chen Jiayi (replace with the name shown on your Canvas submission, if different)  
+**Team:** Zhang Jiayuan; Wang Sihan; Chen Jiayi; Zhou Zhenchen  
 **Live app:** [ADD YOUR DEPLOYED STREAMLIT URL]  
-**Original Kaggle dataset page:** [ADD ORIGINAL DATASET URL — check with your team]
+**Original Kaggle dataset page:** https://www.kaggle.com/datasets/vedauv/global-spotify-hits-and-audio-dynamics-20182026
+
+## My design rationale (individual draft — review and personalize before submission)
+
+I chose to focus on the **daily editorial shortlist** instead of trying to predict every listener's favorite song. At first, I considered ranking tracks mainly by total streams, because a large streaming number seems like an easy signal of popularity. After inspecting the data, I realized that this would favor songs that have been available longer, and the data does not tell me whether a song is gaining popularity *today*. This pushed me to treat total streams as **historical context**, not as a recommendation score.
+
+My main design choice was to combine **chart staying power** with **historical reach** while leaving the final decision to a curator. The two measurements are not interchangeable: in this sample their correlation is close to zero, so a track with many streams is not necessarily a track with a long chart history. The scatter plot lets the curator see both at once; the genre chart provides context for whether a shortlist is concentrated in one category. I deliberately put a candidate table at the bottom, because the curator ultimately needs specific tracks to review, not just attractive charts.
+
+I also wanted the dashboard to make its limitations visible. The tracks use generic titles and artist identifiers, and the file has no skip rates, listener preferences, or day-by-day streaming counts. It would be misleading to label the highest-ranked track as "the best song to recommend." My dashboard therefore presents a **transparent starting shortlist**, with content and genre filters, rather than pretending to automate the editorial judgment. If this were deployed at a real music platform, I would first connect fresh listening data and test whether featured songs improve playlist completion or engagement.
 
 ## Step 1 — Data and decision-maker
 
@@ -11,7 +19,7 @@ This dashboard serves a **music streaming platform's playlist curator**, the per
 
 The provided dataset contains 1,200 songs with release dates from January 2018 through June 2026. Each row represents one unique track, identified by `track_id`. Three tables are joined one-to-one: `track_metadata.csv` (track, artist, genre, release date, explicit flag, duration), `audio_features.csv` (danceability, energy, tempo and other features), and `chart_longevity_panel.csv` (peak chart rank, Top 100 weeks, cumulative streams and other chart metrics). There are eight genres. All 1,200 IDs match across files, and the supplied tables contain no missing values.
 
-**Provenance limitation:** The supplied datasheet describes derived/aggregated analytics but does not identify the original streaming provider, acquisition procedure, chart territory, or exact measurement cutoff. Track titles and artist names are generic labels (e.g., “Hit Song 1”), suggesting the dataset may be synthetic or anonymized. We therefore use it to demonstrate a hypothetical curator's workflow and do not present results as verified live Spotify performance. The original dataset link needs to be filled in from the team's source page.
+**Provenance limitation:** The supplied datasheet describes derived/aggregated analytics but does not identify the original streaming provider, acquisition procedure, chart territory, or exact measurement cutoff. Track titles and artist names are generic labels (e.g., “Hit Song 1”), suggesting the dataset may be synthetic or anonymized. We therefore use it to demonstrate a hypothetical curator's workflow and do not present results as verified live Spotify performance. The source is the Kaggle page linked above. We do not assume the values are live Spotify measurements; the original recording and labeling processes are not independently verifiable from the supplied files.
 
 ## Step 2 — Why an interactive dashboard?
 
@@ -69,8 +77,8 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-The repository needs `app.py`, the three CSV files, `requirements.txt`, `.python-version` and this `README.md`. Publish it under **your own GitHub account** and deploy from that repository under **your own Streamlit Community Cloud account**. Streamlit's **Main file path** is `app.py`; in Advanced settings use **Python 3.14**, as required by the assignment. Replace the placeholders in this README and the team-name caption in `app.py` before submitting. Put both URLs in the first Markdown cell of `phone-trade-in.ipynb` for the full Assignment 4 submission.
+The repository needs `app.py`, the three CSV files, `requirements.txt`, `.python-version` and this `README.md`. Publish it under **your own GitHub account** and deploy from that repository under **your own Streamlit Community Cloud account**. Streamlit's **Main file path** is `app.py`; in Advanced settings use **Python 3.14**, as required by the assignment. Replace the deployed-app URL placeholder in this README before submitting and confirm the owner name matches your submission. Put both URLs in the first Markdown cell of `phone-trade-in.ipynb` for the full Assignment 4 submission.
 
 ## Minimal EDA audit
 
-The provided raw tables have 1,200 unique tracks each, one-to-one join keys and no missing cells. Genre sizes: Pop 318, Hip-Hop 221, Dance/Electronic 175, R&B 128, Indie/Alternative 124, Rock 109, Latin 66, K-Pop 59. Historic Top 100 weeks range from 5 to 102 (median 18); total streams range from 9.99M to 1,467.02M (median 280.99M). Top 100 weeks and lifetime streams have a weak sample Pearson correlation (~0.017), motivating the two-dimensional chart rather than assuming one automatically implies the other. The reproducible EDA script is `eda.py`.
+The provided raw tables have 1,200 unique tracks each, one-to-one join keys and no missing cells. Genre sizes: Pop 318, Hip-Hop 221, Dance/Electronic 175, R&B 128, Indie/Alternative 124, Rock 109, Latin 66, K-Pop 59. Historic Top 100 weeks range from 5 to 102 (median 18); total streams range from 9.99M to 1,467.02M (median 280.99M). Top 100 weeks and lifetime streams have a weak sample Pearson correlation (~0.017), motivating the two-dimensional chart rather than assuming one automatically implies the other. The reproducible EDA script is `eda.py`; `eda.ipynb` is an accompanying Pandas/Matplotlib notebook showing the same audit.
