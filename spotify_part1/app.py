@@ -24,8 +24,9 @@ def load_data():
 
 
 df = load_data()
-st.title("🎧 Daily Playlist Curation Dashboard")
-st.caption("BANA409 · Team: [YOUR TEAM NAME] | For a music playlist curator choosing songs to shortlist for the next Daily Recommendations playlist")
+st.title("🎧 Daily Playlist Curation Dashboard — Team Zhang–Wang–Chen–Zhou")
+st.caption("BANA409 · Team members: Zhang Jiayuan · Wang Sihan · Chen Jiayi · Zhou Zhenchen")
+st.caption("For a music playlist curator choosing songs to shortlist for the next Daily Recommendations playlist")
 st.info("**Decision:** Identify songs with strong historical reach and staying power, then review the shortlisted tracks before programming the playlist.")
 st.caption(
     f"**Dataset:** Frozen snapshot of {len(df):,} tracks with release dates "
